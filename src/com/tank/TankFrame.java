@@ -5,16 +5,21 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankFrame extends Frame {
 
-    Tank tank = new Tank(200,200,DirEnum.DOWN);
-
+    Tank tank = new Tank(200,200,DirEnum.DOWN,this);
+    List<Bullet> bullets = new ArrayList<>();
+    private final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
     public TankFrame(){
-        setSize(800,900);
+        setSize(GAME_WIDTH,GAME_HEIGHT);
         setResizable(false);
         setTitle("Tank War");
         setVisible(true);
+        setBackground(Color.BLACK);
+        setLocation(400,200);
         this.addKeyListener(new MyKeyListener());
         addWindowListener(new WindowAdapter() {
             @Override
@@ -25,9 +30,25 @@ public class TankFrame extends Frame {
 
     }
 
+    /**
+     * 双缓冲消除画面闪烁
+     */
+    @Override
+    public void update(Graphics g) {
+        Image image = this.createImage(GAME_WIDTH,GAME_HEIGHT);
+        Graphics gOffscreen = image.getGraphics();
+        Color c = gOffscreen.getColor();
+        gOffscreen.setColor(Color.BLACK);
+        gOffscreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        gOffscreen.setColor(c);
+        paint(gOffscreen);
+        g.drawImage(image,0,0,null);
+    }
+
     @Override
     public void paint(Graphics g) {
         tank.paint(g);
+        bullets.stream().forEach(a -> a.paint(g));
     }
     class MyKeyListener extends KeyAdapter{
         boolean vl = false;
@@ -69,6 +90,9 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN :
                     vd = false;
+                    break;
+                case KeyEvent.VK_CONTROL:
+                    tank.fire();
                     break;
             }
             setMarkDir();

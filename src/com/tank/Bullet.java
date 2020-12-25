@@ -2,31 +2,27 @@ package com.tank;
 
 import java.awt.*;
 
-public class Tank {
+public class Bullet {
+
+    private static final int SPEED = 5;
     private int x;
     private int y;
-    private DirEnum dir = DirEnum.DOWN;
-    private static final int SPEED = 10;
-    private boolean moving = false;
-    private TankFrame tk;
-    public Tank(int x, int y, DirEnum dir,TankFrame tk) {
+    private DirEnum dir;
+
+    public Bullet(int x, int y, DirEnum dir) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tk = tk;
     }
 
     public void paint(Graphics g){
-        Color color = g.getColor();
-        g.setColor(Color.YELLOW);
-        g.fillRect(x,y,50,50);
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.fillOval(x,y,15,15);
         moving();
-        g.setColor(color);
+        g.setColor(c);
     }
     private void moving(){
-        if(!moving){
-            return;
-        }
         switch (dir){
             case LEFT:
                 x -= SPEED;
@@ -42,6 +38,7 @@ public class Tank {
                 break;
         }
     }
+
     public int getX() {
         return x;
     }
@@ -64,19 +61,5 @@ public class Tank {
 
     public void setDir(DirEnum dir) {
         this.dir = dir;
-    }
-
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
-    public void fire() {
-        for(int i = 0;i < 3;i++){
-            tk.bullets.add(new Bullet(this.x,this.y,this.dir));
-        }
     }
 }
