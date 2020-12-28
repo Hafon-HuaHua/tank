@@ -1,4 +1,8 @@
-package com.tank;
+package com.tank.vo;
+
+import com.tank.enums.DirEnum;
+import com.tank.main.TankFrame;
+import com.tank.util.ResourceMgr;
 
 import java.awt.*;
 
@@ -7,6 +11,7 @@ public class Tank {
     private int y;
     private DirEnum dir = DirEnum.DOWN;
     private static final int SPEED = 10;
+    private boolean isLive = true;
     private boolean moving = false;
     private TankFrame tk;
     public Tank(int x, int y, DirEnum dir,TankFrame tk) {
@@ -17,11 +22,21 @@ public class Tank {
     }
 
     public void paint(Graphics g){
-        Color color = g.getColor();
-        g.setColor(Color.YELLOW);
-        g.fillRect(x,y,50,50);
+        switch (dir){
+            case LEFT:
+                g.drawImage(ResourceMgr.tankL,x,y,null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.tankU,x,y,null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.tankR,x,y,null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.tankD,x,y,null);
+                break;
+        }
         moving();
-        g.setColor(color);
     }
     private void moving(){
         if(!moving){
@@ -74,9 +89,15 @@ public class Tank {
         this.moving = moving;
     }
 
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
+
     public void fire() {
-        for(int i = 0;i < 3;i++){
-            tk.bullets.add(new Bullet(this.x,this.y,this.dir));
-        }
+        tk.bullets.add(new Bullet(this.x,this.y,this.dir,this.tk));
     }
 }
