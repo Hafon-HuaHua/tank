@@ -2,6 +2,7 @@ package com.tank.main;
 
 import com.tank.enums.DirEnum;
 import com.tank.enums.GroupEnum;
+import com.tank.vo.Boom;
 import com.tank.vo.Bullet;
 import com.tank.vo.Tank;
 
@@ -19,7 +20,8 @@ public class TankFrame extends Frame {
     //敌方坦克
     public List<Tank> enemyTanks = new ArrayList<>();
     public List<Bullet> bullets = new ArrayList<>();
-    private final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
+    public List<Boom> booms = new ArrayList<>();
+    private final int GAME_WIDTH = 1000,GAME_HEIGHT = 1000;
 
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -41,7 +43,7 @@ public class TankFrame extends Frame {
     }
     private void initEnemyTanks(){
         for(int i = 0; i < 4;i++){
-            Tank tank = new Tank(20 + i * 80,150,DirEnum.DOWN, GroupEnum.BAD,this);
+            Tank tank = new Tank(180 + i * 10,200,DirEnum.DOWN, GroupEnum.BAD,this);
             enemyTanks.add(tank);
         }
     }
@@ -66,14 +68,17 @@ public class TankFrame extends Frame {
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量：" + bullets.size(),10,40);
         g.drawString("敌方坦克的数量：" + enemyTanks.size(),10,80);
+        g.drawString("爆炸数量：" + booms.size(),10,120);
         g.setColor(c);
         tank.paint(g);
         for(int i = 0; i<enemyTanks.size();i++){
             enemyTanks.get(i).paint(g);
         }
         for(int i = 0; i<bullets.size();i++){
-            g.setColor(Color.WHITE);
             bullets.get(i).paint(g);
+        }
+        for(int i = 0; i<booms.size();i++){
+            booms.get(i).paint(g);
         }
         for(int i = 0;i < bullets.size();i++){
             for(int j = 0; j < enemyTanks.size();j++){

@@ -6,6 +6,7 @@ import com.tank.main.TankFrame;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class Bullet {
 
@@ -106,7 +107,11 @@ public class Bullet {
         Rectangle r2 = new Rectangle(tank.getX(),tank.getY(),Tank.WEIGHT,Tank.HEIGHT);
         if(r1.intersects(r2)){
             this.die();
-            tank.die();
+            try {
+                tank.die();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

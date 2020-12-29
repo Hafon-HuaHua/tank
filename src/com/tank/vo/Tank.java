@@ -6,6 +6,7 @@ import com.tank.main.TankFrame;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Random;
 
 public class Tank {
@@ -66,9 +67,16 @@ public class Tank {
                 y += SPEED;
                 break;
         }
-        if(r.nextInt(40) == 9){
+        if(this.groupEnum == GroupEnum.BAD && r.nextInt(40) == 9){
             this.fire();
         }
+        if(this.groupEnum == GroupEnum.BAD && r.nextInt(40) == 9){
+            randomDir();
+        }
+    }
+
+    private void randomDir() {
+        this.dir = DirEnum.values()[r.nextInt(4)];
     }
 
     public GroupEnum getGroup() {
@@ -125,7 +133,10 @@ public class Tank {
         tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
     }
 
-    public void die() {
+    public void die() throws IOException {
         this.isLive = false;
+        int eX = this.getX() + Tank.WEIGHT/2 - Boom.WIDTH/2;
+        int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
+        tk.booms.add(new Boom(eX,eY,tk));
     }
 }
