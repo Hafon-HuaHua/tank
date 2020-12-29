@@ -3,6 +3,7 @@ package com.tank.vo;
 import com.tank.enums.DirEnum;
 import com.tank.enums.GroupEnum;
 import com.tank.main.TankFrame;
+import com.tank.util.Audio;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
@@ -128,6 +129,9 @@ public class Tank {
     }
 
     public void fire() {
+        if(this.groupEnum == GroupEnum.GOOD){
+            new Thread(()-> new Audio("audio/tank_fire.wav").play()).start();
+        }
         int bX = this.x + Tank.WEIGHT/2 - Bullet.WEIGHT/2;
         int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
         tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
