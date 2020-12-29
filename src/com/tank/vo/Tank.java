@@ -1,27 +1,37 @@
 package com.tank.vo;
 
 import com.tank.enums.DirEnum;
+import com.tank.enums.Group;
 import com.tank.main.TankFrame;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Tank {
     private int x;
     private int y;
     private DirEnum dir = DirEnum.DOWN;
-    private static final int SPEED = 10;
+    private static final int SPEED = 1;
     private boolean isLive = true;
-    private boolean moving = false;
+    private boolean moving = true;
+    public static int WEIGHT = ResourceMgr.tankD.getWidth();
+    public static int HEIGHT = ResourceMgr.tankD.getHeight();
     private TankFrame tk;
-    public Tank(int x, int y, DirEnum dir,TankFrame tk) {
+    private Random r = new Random();
+    private Group group = Group.BAD;
+    public Tank(int x, int y, DirEnum dir,Group group,TankFrame tk) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
         this.tk = tk;
     }
 
     public void paint(Graphics g){
+        if(!isLive){
+            tk.enemyTanks.remove(this);
+        }
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.tankL,x,y,null);
@@ -56,7 +66,19 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+        if(r.nextInt(40) == 9){
+            this.fire();
+        }
     }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     public int getX() {
         return x;
     }
@@ -98,6 +120,12 @@ public class Tank {
     }
 
     public void fire() {
-        tk.bullets.add(new Bullet(this.x,this.y,this.dir,this.tk));
+        int bX = this.x + Tank.WEIGHT/2 - Bullet.WEIGHT/2;
+        int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
+        tk.bullets.add(new Bullet(bX,bY,this.dir,this.group,this.tk));
+    }
+
+    public void die() {
+        this.isLive = false;
     }
 }

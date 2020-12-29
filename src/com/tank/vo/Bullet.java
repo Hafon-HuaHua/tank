@@ -1,6 +1,7 @@
 package com.tank.vo;
 
 import com.tank.enums.DirEnum;
+import com.tank.enums.Group;
 import com.tank.main.TankFrame;
 import com.tank.util.ResourceMgr;
 
@@ -13,33 +14,22 @@ public class Bullet {
     private int y;
     private DirEnum dir;
     private TankFrame tk;
-
-    private boolean isPaint = true;
-
-    public Bullet(int x, int y, DirEnum dir,TankFrame tk) {
+    public static int WEIGHT = ResourceMgr.bulletD.getWidth();
+    public static int HEIGHT = ResourceMgr.bulletD.getHeight();
+    private boolean isLive = true;
+    private Group group = Group.BAD;
+    public Bullet(int x, int y, DirEnum dir,Group group,TankFrame tk) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
         this.tk = tk;
     }
 
     public void paint(Graphics g){
-        if(!isPaint){
+        if(!isLive){
             tk.bullets.remove(this);
         }
-
-        /*if(tk.enemyTanks.size() > 0){
-            for(Iterator<Tank> itor = tk.enemyTanks.iterator();itor.hasNext();){
-                if(!itor.next().isLive()){
-                    itor.remove();
-                    tk.repaint();
-                    tk.bullets.remove(this);
-                    break;
-                }
-            }
-        }*/
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.bulletL,x,y,null);
@@ -55,7 +45,6 @@ public class Bullet {
                 break;
         }
         moving();
-        g.setColor(c);
     }
     private void moving(){
         switch (dir){
@@ -73,15 +62,16 @@ public class Bullet {
                 break;
         }
         if(x < 0 || y < 0 || x > tk.getGAME_WIDTH() || y > tk.getGAME_HEIGHT()){
-            isPaint = false;
+            isLive = false;
         }
-        /*for(Iterator<Tank> itor = tk.enemyTanks.iterator();itor.hasNext();){
-            Tank tank = itor.next();
-            if((x >= tank.getX() && y <= tank.getY()) && (x < tk.getGAME_WIDTH() && y < tk.getGAME_HEIGHT())){
-                tank.setLive(false);
-                break;
-            }
-        }*/
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public int getX() {
@@ -106,5 +96,21 @@ public class Bullet {
 
     public void setDir(DirEnum dir) {
         this.dir = dir;
+    }
+
+    public void destoryTanks(Tank tank) {
+        if(this.group == tank.getGroup()){
+            return;
+        }
+        Rectangle r1 = new Rectangle(this.x,this.y,Bullet.WEIGHT,Bullet.HEIGHT);
+        Rectangle r2 = new Rectangle(tank.getX(),tank.getY(),Tank.WEIGHT,Tank.HEIGHT);
+        if(r1.intersects(r2)){
+            this.die();
+            tank.die();
+        }
+    }
+
+    private void die() {
+        this.isLive = false;
     }
 }

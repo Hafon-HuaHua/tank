@@ -1,8 +1,9 @@
 package com.tank.main;
 
+import com.tank.enums.DirEnum;
+import com.tank.enums.Group;
 import com.tank.vo.Bullet;
 import com.tank.vo.Tank;
-import com.tank.enums.DirEnum;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -11,15 +12,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class TankFrame extends Frame {
 
-    public Tank tank = new Tank(200,200, DirEnum.DOWN,this);
+    public Tank tank = new Tank(200,400, DirEnum.UP, Group.GOOD,this);
     //敌方坦克
     public List<Tank> enemyTanks = new ArrayList<>();
     public List<Bullet> bullets = new ArrayList<>();
     private final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
+
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);
         setResizable(false);
@@ -28,7 +29,7 @@ public class TankFrame extends Frame {
         setBackground(Color.BLACK);
         setLocation(400,200);
         //初始化敌方坦克
-        //initEnemyTanks();
+        initEnemyTanks();
         this.addKeyListener(new MyKeyListener());
         addWindowListener(new WindowAdapter() {
             @Override
@@ -39,9 +40,8 @@ public class TankFrame extends Frame {
 
     }
     private void initEnemyTanks(){
-        Random random = new Random();
-        for(int i = 0; i < 2;i++){
-            Tank tank = new Tank(random.nextInt(300 + random.nextInt(30)),random.nextInt(300 + random.nextInt(50)),DirEnum.DOWN,this);
+        for(int i = 0; i < 4;i++){
+            Tank tank = new Tank(20 + i * 80,150,DirEnum.DOWN,Group.BAD,this);
             enemyTanks.add(tank);
         }
     }
@@ -62,19 +62,25 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("子弹的数量：" + bullets.size(),10,40);
+        g.drawString("敌方坦克的数量：" + enemyTanks.size(),10,80);
+        g.setColor(c);
         tank.paint(g);
-        /*for(int i = 0; i<enemyTanks.size();i++){
-            Color c1 = g.getColor();
-            g.setColor(Color.WHITE);
-            Tank t = enemyTanks.get(i);
-            g.drawString("x:" + t.getX() + ",y:" + t.getY(),t.getX() - 5,t.getY() - 5);
-            g.setColor(c1);
+        for(int i = 0; i<enemyTanks.size();i++){
             enemyTanks.get(i).paint(g);
-        }*/
+        }
         for(int i = 0; i<bullets.size();i++){
+            g.setColor(Color.WHITE);
             bullets.get(i).paint(g);
         }
-        //bullets.stream().forEach(a -> a.paint(g));
+        for(int i = 0;i < bullets.size();i++){
+            for(int j = 0; j < enemyTanks.size();j++){
+                bullets.get(i).destoryTanks(enemyTanks.get(j));
+            }
+        }
+
     }
     class MyKeyListener extends KeyAdapter{
         boolean vl = false;
