@@ -2,7 +2,7 @@ package com.tank.main;
 
 import com.tank.enums.DirEnum;
 import com.tank.enums.GroupEnum;
-import com.tank.util.Audio;
+import com.tank.util.AudioUtil;
 import com.tank.vo.Boom;
 import com.tank.vo.Bullet;
 import com.tank.vo.Tank;
@@ -112,7 +112,7 @@ public class TankFrame extends Frame {
             }
             setMarkDir();
 
-            new Thread(() -> new Audio("audio/tank_move.wav").play()).start();
+            new Thread(() -> new AudioUtil("audio/tank_move.wav").play()).start();
         }
 
         @Override

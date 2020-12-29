@@ -3,7 +3,7 @@ package com.tank.vo;
 import com.tank.enums.DirEnum;
 import com.tank.enums.GroupEnum;
 import com.tank.main.TankFrame;
-import com.tank.util.Audio;
+import com.tank.util.AudioUtil;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
@@ -17,8 +17,8 @@ public class Tank {
     private static final int SPEED = 1;
     private boolean isLive = true;
     private boolean moving = true;
-    public static int WEIGHT = ResourceMgr.tankD.getWidth();
-    public static int HEIGHT = ResourceMgr.tankD.getHeight();
+    public static int WEIGHT = ResourceMgr.badTankD.getWidth();
+    public static int HEIGHT = ResourceMgr.badTankD.getHeight();
     private TankFrame tk;
     private Random r = new Random();
     private GroupEnum groupEnum = GroupEnum.BAD;
@@ -36,16 +36,16 @@ public class Tank {
         }
         switch (dir){
             case LEFT:
-                g.drawImage(ResourceMgr.tankL,x,y,null);
+                g.drawImage(this.groupEnum == GroupEnum.GOOD ?ResourceMgr.goodTankL : ResourceMgr.badTankL,x,y,null);
                 break;
             case UP:
-                g.drawImage(ResourceMgr.tankU,x,y,null);
+                g.drawImage(this.groupEnum == GroupEnum.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU,x,y,null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.tankR,x,y,null);
+                g.drawImage(this.groupEnum == GroupEnum.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR,x,y,null);
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.tankD,x,y,null);
+                g.drawImage(this.groupEnum == GroupEnum.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD,x,y,null);
                 break;
         }
         moving();
@@ -130,7 +130,7 @@ public class Tank {
 
     public void fire() {
         if(this.groupEnum == GroupEnum.GOOD){
-            new Thread(()-> new Audio("audio/tank_fire.wav").play()).start();
+            new Thread(()-> new AudioUtil("audio/tank_fire.wav").play()).start();
         }
         int bX = this.x + Tank.WEIGHT/2 - Bullet.WEIGHT/2;
         int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;

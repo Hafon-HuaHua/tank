@@ -4,7 +4,7 @@ package com.tank.util;
 import javax.sound.sampled.*;
 import java.io.IOException;
 
-public class Audio {
+public class AudioUtil {
 
 	byte[] b = new byte[1024 * 1024 * 15];
 
@@ -38,9 +38,9 @@ public class Audio {
 
 	private AudioInputStream audioInputStream = null;
 
-	public Audio(String fileName) {
+	public AudioUtil(String fileName) {
 		try {
-			audioInputStream = AudioSystem.getAudioInputStream(Audio.class.getClassLoader().getResource(fileName));
+			audioInputStream = AudioSystem.getAudioInputStream(AudioUtil.class.getClassLoader().getResource(fileName));
 			audioFormat = audioInputStream.getFormat();
 			dataLine_info = new DataLine.Info(SourceDataLine.class, audioFormat);
 			sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLine_info);
@@ -84,7 +84,7 @@ public class Audio {
 
 	public static void main(String[] args) {
 		// Audio a = new Audio("audio/explode.wav");
-		Audio a = new Audio("audio/war1.wav");
+		AudioUtil a = new AudioUtil("audio/war1.wav");
 		a.loop();
 
 	}

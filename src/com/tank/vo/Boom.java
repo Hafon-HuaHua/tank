@@ -1,7 +1,7 @@
 package com.tank.vo;
 
 import com.tank.main.TankFrame;
-import com.tank.util.Audio;
+import com.tank.util.AudioUtil;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class Boom {
         this.x = x;
         this.y = y;
         this.tk = tk;
-        new Thread(() -> new Audio("audio/explode.wav").play()).start();
+        new Thread(() -> new AudioUtil("audio/explode.wav").play()).start();
     }
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.boomImages[step++],this.x,this.y,null);
