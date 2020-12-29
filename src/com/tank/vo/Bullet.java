@@ -104,7 +104,7 @@ public class Bullet {
             return;
         }
         Rectangle r1 = new Rectangle(this.x,this.y,Bullet.WEIGHT,Bullet.HEIGHT);
-        Rectangle r2 = new Rectangle(tank.getX(),tank.getY(),Tank.WEIGHT,Tank.HEIGHT);
+        Rectangle r2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
         if(r1.intersects(r2)){
             this.die();
             try {

@@ -22,7 +22,7 @@ public class TankFrame extends Frame {
     public List<Tank> enemyTanks = new ArrayList<>();
     public List<Bullet> bullets = new ArrayList<>();
     public List<Boom> booms = new ArrayList<>();
-    private final int GAME_WIDTH = 1000,GAME_HEIGHT = 1000;
+    public static final int GAME_WIDTH = 1000,GAME_HEIGHT = 1000;
 
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);

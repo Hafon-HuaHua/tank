@@ -17,7 +17,7 @@ public class Tank {
     private static final int SPEED = 1;
     private boolean isLive = true;
     private boolean moving = true;
-    public static int WEIGHT = ResourceMgr.badTankD.getWidth();
+    public static int WIDTH = ResourceMgr.badTankD.getWidth();
     public static int HEIGHT = ResourceMgr.badTankD.getHeight();
     private TankFrame tk;
     private Random r = new Random();
@@ -73,6 +73,22 @@ public class Tank {
         }
         if(this.groupEnum == GroupEnum.BAD && r.nextInt(40) == 9){
             randomDir();
+        }
+        boundsCheck();
+    }
+
+    private void boundsCheck() {
+        if(this.x < 0){
+            this.x = 0;
+        }
+        if(this.y < 30){
+            this.y = 30;
+        }
+        if(this.x > TankFrame.GAME_WIDTH - Tank.WIDTH){
+            this.x = TankFrame.GAME_WIDTH - Tank.WIDTH;
+        }
+        if(this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT){
+            this.y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
         }
     }
 
@@ -132,14 +148,14 @@ public class Tank {
         if(this.groupEnum == GroupEnum.GOOD){
             new Thread(()-> new AudioUtil("audio/tank_fire.wav").play()).start();
         }
-        int bX = this.x + Tank.WEIGHT/2 - Bullet.WEIGHT/2;
+        int bX = this.x + Tank.WIDTH/2 - Bullet.WEIGHT/2;
         int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
         tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
     }
 
     public void die() throws IOException {
         this.isLive = false;
-        int eX = this.getX() + Tank.WEIGHT/2 - Boom.WIDTH/2;
+        int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
         int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
         tk.booms.add(new Boom(eX,eY,tk));
     }
