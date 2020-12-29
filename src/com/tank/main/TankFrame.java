@@ -43,7 +43,7 @@ public class TankFrame extends Frame {
 
     }
     private void initEnemyTanks(){
-        for(int i = 0; i < 4;i++){
+        for(int i = 0; i < 5;i++){
             Tank tank = new Tank(180 + i * 10,200,DirEnum.DOWN, GroupEnum.BAD,this);
             enemyTanks.add(tank);
         }

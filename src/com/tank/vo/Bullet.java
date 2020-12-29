@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Bullet {
 
-    private static final int SPEED = 2;
+    private static final int SPEED = 5;
     private int x;
     private int y;
     private DirEnum dir;
