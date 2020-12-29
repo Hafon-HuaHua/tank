@@ -1,7 +1,7 @@
 package com.tank.main;
 
 import com.tank.enums.DirEnum;
-import com.tank.enums.Group;
+import com.tank.enums.GroupEnum;
 import com.tank.vo.Bullet;
 import com.tank.vo.Tank;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class TankFrame extends Frame {
 
-    public Tank tank = new Tank(200,400, DirEnum.UP, Group.GOOD,this);
+    public Tank tank = new Tank(200,400, DirEnum.UP, GroupEnum.GOOD,this);
     //敌方坦克
     public List<Tank> enemyTanks = new ArrayList<>();
     public List<Bullet> bullets = new ArrayList<>();
@@ -41,7 +41,7 @@ public class TankFrame extends Frame {
     }
     private void initEnemyTanks(){
         for(int i = 0; i < 4;i++){
-            Tank tank = new Tank(20 + i * 80,150,DirEnum.DOWN,Group.BAD,this);
+            Tank tank = new Tank(20 + i * 80,150,DirEnum.DOWN, GroupEnum.BAD,this);
             enemyTanks.add(tank);
         }
     }

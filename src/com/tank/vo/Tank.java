@@ -1,7 +1,7 @@
 package com.tank.vo;
 
 import com.tank.enums.DirEnum;
-import com.tank.enums.Group;
+import com.tank.enums.GroupEnum;
 import com.tank.main.TankFrame;
 import com.tank.util.ResourceMgr;
 
@@ -19,12 +19,12 @@ public class Tank {
     public static int HEIGHT = ResourceMgr.tankD.getHeight();
     private TankFrame tk;
     private Random r = new Random();
-    private Group group = Group.BAD;
-    public Tank(int x, int y, DirEnum dir,Group group,TankFrame tk) {
+    private GroupEnum groupEnum = GroupEnum.BAD;
+    public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.group = group;
+        this.groupEnum = groupEnum;
         this.tk = tk;
     }
 
@@ -71,12 +71,12 @@ public class Tank {
         }
     }
 
-    public Group getGroup() {
-        return group;
+    public GroupEnum getGroup() {
+        return groupEnum;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(GroupEnum groupEnum) {
+        this.groupEnum = groupEnum;
     }
 
     public int getX() {
@@ -122,7 +122,7 @@ public class Tank {
     public void fire() {
         int bX = this.x + Tank.WEIGHT/2 - Bullet.WEIGHT/2;
         int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-        tk.bullets.add(new Bullet(bX,bY,this.dir,this.group,this.tk));
+        tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
     }
 
     public void die() {

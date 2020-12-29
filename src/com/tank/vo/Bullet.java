@@ -1,7 +1,7 @@
 package com.tank.vo;
 
 import com.tank.enums.DirEnum;
-import com.tank.enums.Group;
+import com.tank.enums.GroupEnum;
 import com.tank.main.TankFrame;
 import com.tank.util.ResourceMgr;
 
@@ -17,12 +17,12 @@ public class Bullet {
     public static int WEIGHT = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private boolean isLive = true;
-    private Group group = Group.BAD;
-    public Bullet(int x, int y, DirEnum dir,Group group,TankFrame tk) {
+    private GroupEnum groupEnum = GroupEnum.BAD;
+    public Bullet(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.group = group;
+        this.groupEnum = groupEnum;
         this.tk = tk;
     }
 
@@ -66,12 +66,12 @@ public class Bullet {
         }
     }
 
-    public Group getGroup() {
-        return group;
+    public GroupEnum getGroup() {
+        return groupEnum;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(GroupEnum groupEnum) {
+        this.groupEnum = groupEnum;
     }
 
     public int getX() {
@@ -99,7 +99,7 @@ public class Bullet {
     }
 
     public void destoryTanks(Tank tank) {
-        if(this.group == tank.getGroup()){
+        if(this.groupEnum == tank.getGroup()){
             return;
         }
         Rectangle r1 = new Rectangle(this.x,this.y,Bullet.WEIGHT,Bullet.HEIGHT);

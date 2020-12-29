@@ -1,5 +1,5 @@
 package com.tank.enums;
 
-public enum Group {
+public enum GroupEnum {
     GOOD,BAD;
 }
