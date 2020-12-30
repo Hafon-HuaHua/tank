@@ -4,6 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
+/**
+ * 图片相关工具类
+ */
 public class ImageUtil {
 	public static BufferedImage rotateImage(final BufferedImage bufferedimage,
             final int degree) {

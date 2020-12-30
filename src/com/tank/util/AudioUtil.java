@@ -4,6 +4,9 @@ package com.tank.util;
 import javax.sound.sampled.*;
 import java.io.IOException;
 
+/**
+ * 声音工具类
+ */
 public class AudioUtil {
 
 	byte[] b = new byte[1024 * 1024 * 15];

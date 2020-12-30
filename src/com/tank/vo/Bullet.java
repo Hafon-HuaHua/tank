@@ -20,6 +20,7 @@ public class Bullet {
     private boolean isLive = true;
     private GroupEnum groupEnum = GroupEnum.BAD;
     private Rectangle rect = new Rectangle();
+
     public Bullet(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
         this.x = x;
         this.y = y;
@@ -70,17 +71,22 @@ public class Bullet {
         }
         rect.x = this.x;
         rect.y = this.y;
-        if(x < 0 || y < 0 || x > tk.getGAME_WIDTH() || y > tk.getGAME_HEIGHT()){
+        if(x < 0 || y < 0 || x > tk.GAME_WIDTH || y > tk.GAME_HEIGHT){
             isLive = false;
         }
     }
 
+    /**
+     * 销毁坦克
+     * @param tank
+     */
     public void destoryTanks(Tank tank) {
         if(this.groupEnum == tank.getGroup()){
             return;
         }
 //        Rectangle r1 = new Rectangle(this.x,this.y,Bullet.WEIGHT,Bullet.HEIGHT);
 //        Rectangle r2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
+        /*通过Rectangle判断碰撞*/
         if(rect.intersects(tank.getRect())){
             this.die();
             try {
@@ -91,39 +97,10 @@ public class Bullet {
         }
     }
 
+    /**
+     * 子弹消失
+     */
     private void die() {
         this.isLive = false;
     }
-    public GroupEnum getGroup() {
-        return groupEnum;
-    }
-
-    public void setGroup(GroupEnum groupEnum) {
-        this.groupEnum = groupEnum;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public DirEnum getDir() {
-        return dir;
-    }
-
-    public void setDir(DirEnum dir) {
-        this.dir = dir;
-    }
-
 }

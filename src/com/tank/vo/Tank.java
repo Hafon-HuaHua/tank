@@ -23,6 +23,7 @@ public class Tank {
     private Random r = new Random();
     private GroupEnum groupEnum = GroupEnum.BAD;
     private Rectangle rect = new Rectangle();
+
     public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
         this.x = x;
         this.y = y;
@@ -35,6 +36,10 @@ public class Tank {
         rect.height = HEIGHT;
     }
 
+    /**
+     * 画坦克
+     * @param g
+     */
     public void paint(Graphics g){
         if(!isLive){
             tk.enemyTanks.remove(this);
@@ -55,6 +60,10 @@ public class Tank {
         }
         moving();
     }
+
+    /**
+     * 坦克移动
+     */
     private void moving(){
         if(!moving){
             return;
@@ -84,12 +93,15 @@ public class Tank {
         rect.y = this.y;
     }
 
+    /**
+     * 边界检查
+     */
     private void boundsCheck() {
         if(this.x < 0){
             this.x = 0;
         }
-        if(this.y < 30){
-            this.y = 30;
+        if(this.y < 28){
+            this.y = 28;
         }
         if(this.x > TankFrame.GAME_WIDTH - Tank.WIDTH){
             this.x = TankFrame.GAME_WIDTH - Tank.WIDTH;
@@ -99,6 +111,9 @@ public class Tank {
         }
     }
 
+    /**
+     * 坦克开火
+     */
     public void fire() {
         if(this.groupEnum == GroupEnum.GOOD){
             new Thread(()-> new AudioUtil("audio/tank_fire.wav").play()).start();
@@ -108,6 +123,10 @@ public class Tank {
         tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
     }
 
+    /**
+     * 坦克死亡
+     * @throws IOException
+     */
     public void die() throws IOException {
         this.isLive = false;
         int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
@@ -131,47 +150,19 @@ public class Tank {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public DirEnum getDir() {
-        return dir;
     }
 
     public void setDir(DirEnum dir) {
         this.dir = dir;
     }
 
-    public boolean isMoving() {
-        return moving;
-    }
-
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
 
-    public boolean isLive() {
-        return isLive;
-    }
-
-    public void setLive(boolean live) {
-        isLive = live;
-    }
-
     public Rectangle getRect() {
         return rect;
-    }
-
-    public void setRect(Rectangle rect) {
-        this.rect = rect;
     }
 }
