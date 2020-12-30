@@ -55,7 +55,7 @@ public class TankFrame extends Frame {
      * 初始化敌方坦克
      */
     private void initEnemyTanks(){
-        int enemyTankCount = Integer.valueOf(PropertiesMgr.getVal("initBadTankCount"));
+        int enemyTankCount = PropertiesMgr.getIntVal("initBadTankCount");
         for(int i = 0; i < enemyTankCount; i++){
             Tank tank = new Tank(180 + i * 10,200,DirEnum.DOWN, GroupEnum.BAD,this);
             enemyTanks.add(tank);
