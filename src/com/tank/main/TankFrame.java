@@ -27,7 +27,7 @@ public class TankFrame extends Frame {
     /*爆炸*/
     public List<Boom> booms = new ArrayList<>();
     /*窗口宽和高*/
-    public static final int GAME_WIDTH = 1000,GAME_HEIGHT = 1000;
+    public static final int GAME_WIDTH = PropertiesMgr.getIntVal("gameWidth"),GAME_HEIGHT = PropertiesMgr.getIntVal("gameHeight");
 
     public TankFrame(){
         /*初始窗口属性*/

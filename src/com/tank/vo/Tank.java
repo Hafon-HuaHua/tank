@@ -4,6 +4,7 @@ import com.tank.enums.DirEnum;
 import com.tank.enums.GroupEnum;
 import com.tank.main.TankFrame;
 import com.tank.util.AudioUtil;
+import com.tank.util.PropertiesMgr;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
@@ -14,7 +15,7 @@ public class Tank {
     private int x;
     private int y;
     private DirEnum dir = DirEnum.DOWN;
-    private static final int SPEED = 1;
+    private static final int SPEED = PropertiesMgr.getIntVal("tankSpeed");
     private boolean isLive = true;
     private boolean moving = true;
     public static int WIDTH = ResourceMgr.badTankD.getWidth();

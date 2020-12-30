@@ -3,6 +3,7 @@ package com.tank.vo;
 import com.tank.enums.DirEnum;
 import com.tank.enums.GroupEnum;
 import com.tank.main.TankFrame;
+import com.tank.util.PropertiesMgr;
 import com.tank.util.ResourceMgr;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.io.IOException;
 
 public class Bullet {
 
-    private static final int SPEED = 5;
+    private static final int SPEED = PropertiesMgr.getIntVal("bulletSpeed");
     private int x;
     private int y;
     private DirEnum dir;
