@@ -17,15 +17,8 @@ public class PropertiesMgr {
             e.printStackTrace();
         }
     }
-    public static int getIntValue(String key){
-        if(properties == null){
-            return 0;
-        }
-        String val = properties.getProperty(key);
-        return StringUtils.isEmpty(val) ? 0 : Integer.valueOf(val);
-    }
-    public static String getStringValue(String key){
-        if(properties == null){
+    public static String getVal(String key){
+        if(properties.size() == 0){
             return null;
         }
         String val = properties.getProperty(key);
