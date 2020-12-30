@@ -22,12 +22,17 @@ public class Tank {
     private TankFrame tk;
     private Random r = new Random();
     private GroupEnum groupEnum = GroupEnum.BAD;
+    private Rectangle rect = new Rectangle();
     public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.groupEnum = groupEnum;
         this.tk = tk;
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     public void paint(Graphics g){
@@ -75,6 +80,8 @@ public class Tank {
             randomDir();
         }
         boundsCheck();
+        rect.x = this.x;
+        rect.y = this.y;
     }
 
     private void boundsCheck() {
@@ -90,6 +97,22 @@ public class Tank {
         if(this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT){
             this.y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
         }
+    }
+
+    public void fire() {
+        if(this.groupEnum == GroupEnum.GOOD){
+            new Thread(()-> new AudioUtil("audio/tank_fire.wav").play()).start();
+        }
+        int bX = this.x + Tank.WIDTH/2 - Bullet.WEIGHT/2;
+        int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
+        tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
+    }
+
+    public void die() throws IOException {
+        this.isLive = false;
+        int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
+        int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
+        tk.booms.add(new Boom(eX,eY,tk));
     }
 
     private void randomDir() {
@@ -144,19 +167,11 @@ public class Tank {
         isLive = live;
     }
 
-    public void fire() {
-        if(this.groupEnum == GroupEnum.GOOD){
-            new Thread(()-> new AudioUtil("audio/tank_fire.wav").play()).start();
-        }
-        int bX = this.x + Tank.WIDTH/2 - Bullet.WEIGHT/2;
-        int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-        tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
+    public Rectangle getRect() {
+        return rect;
     }
 
-    public void die() throws IOException {
-        this.isLive = false;
-        int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
-        int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
-        tk.booms.add(new Boom(eX,eY,tk));
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
     }
 }

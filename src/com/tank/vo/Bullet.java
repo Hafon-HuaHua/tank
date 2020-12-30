@@ -19,12 +19,18 @@ public class Bullet {
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private boolean isLive = true;
     private GroupEnum groupEnum = GroupEnum.BAD;
+    private Rectangle rect = new Rectangle();
     public Bullet(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.groupEnum = groupEnum;
         this.tk = tk;
+
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WEIGHT;
+        rect.height = HEIGHT;
     }
 
     public void paint(Graphics g){
@@ -62,11 +68,32 @@ public class Bullet {
                 y += SPEED;
                 break;
         }
+        rect.x = this.x;
+        rect.y = this.y;
         if(x < 0 || y < 0 || x > tk.getGAME_WIDTH() || y > tk.getGAME_HEIGHT()){
             isLive = false;
         }
     }
 
+    public void destoryTanks(Tank tank) {
+        if(this.groupEnum == tank.getGroup()){
+            return;
+        }
+//        Rectangle r1 = new Rectangle(this.x,this.y,Bullet.WEIGHT,Bullet.HEIGHT);
+//        Rectangle r2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
+        if(rect.intersects(tank.getRect())){
+            this.die();
+            try {
+                tank.die();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void die() {
+        this.isLive = false;
+    }
     public GroupEnum getGroup() {
         return groupEnum;
     }
@@ -99,23 +126,4 @@ public class Bullet {
         this.dir = dir;
     }
 
-    public void destoryTanks(Tank tank) {
-        if(this.groupEnum == tank.getGroup()){
-            return;
-        }
-        Rectangle r1 = new Rectangle(this.x,this.y,Bullet.WEIGHT,Bullet.HEIGHT);
-        Rectangle r2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
-        if(r1.intersects(r2)){
-            this.die();
-            try {
-                tank.die();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void die() {
-        this.isLive = false;
-    }
 }
