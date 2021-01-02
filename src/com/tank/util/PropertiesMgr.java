@@ -8,10 +8,11 @@ import java.util.Properties;
  */
 public class PropertiesMgr {
 
+    private PropertiesMgr(){}
     /**
      * 静态内部类使用单例实现LazyLoad
      */
-    static class PropInnerClass{
+    private static class PropInnerClass{
         private static final Properties properties = new Properties();
         static {
             try {

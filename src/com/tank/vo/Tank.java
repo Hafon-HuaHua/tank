@@ -3,6 +3,8 @@ package com.tank.vo;
 import com.tank.enums.DirEnum;
 import com.tank.enums.GroupEnum;
 import com.tank.main.TankFrame;
+import com.tank.service.FireStrategy;
+import com.tank.service.SingleBulletFireStrategy;
 import com.tank.util.AudioUtil;
 import com.tank.util.PropertiesMgr;
 import com.tank.util.ResourceMgr;
@@ -20,21 +22,33 @@ public class Tank {
     private boolean moving = true;
     public static int WIDTH = ResourceMgr.badTankD.getWidth();
     public static int HEIGHT = ResourceMgr.badTankD.getHeight();
-    private TankFrame tk;
+    private TankFrame tf;
     private Random r = new Random();
     private GroupEnum groupEnum = GroupEnum.BAD;
     private Rectangle rect = new Rectangle();
-
+    private FireStrategy fs = SingleBulletFireStrategy.getInstance();
     public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.groupEnum = groupEnum;
-        this.tk = tk;
+        this.tf = tk;
         rect.x = this.x;
         rect.y = this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+        if(groupEnum == GroupEnum.GOOD){
+            String classPath = PropertiesMgr.getStringVal("goodFs");
+            try {
+                fs = (FireStrategy) Class.forName(classPath).newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -43,7 +57,7 @@ public class Tank {
      */
     public void paint(Graphics g){
         if(!isLive){
-            tk.enemyTanks.remove(this);
+            tf.enemyTanks.remove(this);
         }
         switch (dir){
             case LEFT:
@@ -121,7 +135,8 @@ public class Tank {
         }
         int bX = this.x + Tank.WIDTH/2 - Bullet.WEIGHT/2;
         int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-        tk.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tk));
+        fs.fire(this);
+        //tf.bullets.add(new Bullet(bX,bY,this.dir,this.groupEnum,this.tf));
     }
 
     /**
@@ -132,7 +147,7 @@ public class Tank {
         this.isLive = false;
         int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
         int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
-        tk.booms.add(new Boom(eX,eY,tk));
+        tf.booms.add(new Boom(eX,eY,tf));
     }
 
     private void randomDir() {
@@ -165,5 +180,25 @@ public class Tank {
 
     public Rectangle getRect() {
         return rect;
+    }
+
+    public TankFrame getTf() {
+        return tf;
+    }
+
+    public void setTf(TankFrame tf) {
+        this.tf = tf;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public DirEnum getDir() {
+        return dir;
     }
 }
