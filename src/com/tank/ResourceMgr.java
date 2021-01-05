@@ -1,4 +1,4 @@
-package com.tank.util;
+package com.tank;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -1,12 +1,6 @@
-package com.tank.main;
+package com.tank;
 
-import com.tank.enums.DirEnum;
-import com.tank.enums.GroupEnum;
-import com.tank.util.AudioUtil;
-import com.tank.util.PropertiesMgr;
-import com.tank.vo.Boom;
-import com.tank.vo.Bullet;
-import com.tank.vo.Tank;
+import com.tank.abstractfactory.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -23,11 +17,13 @@ public class TankFrame extends Frame {
     /*敌方坦克*/
     public List<Tank> enemyTanks = new ArrayList<>();
     /*子弹*/
-    public List<Bullet> bullets = new ArrayList<>();
+    public List<BaseBullet> bullets = new ArrayList<>();
     /*爆炸*/
-    public List<Boom> booms = new ArrayList<>();
+    public List<BaseBoom> booms = new ArrayList<>();
     /*窗口宽和高*/
     public static final int GAME_WIDTH = PropertiesMgr.getIntVal("gameWidth"),GAME_HEIGHT = PropertiesMgr.getIntVal("gameHeight");
+
+    private GameFactory gameFactory = DefaultFactory.getInstance();
 
     public TankFrame(){
         /*初始窗口属性*/
@@ -181,5 +177,9 @@ public class TankFrame extends Frame {
                 tank.setDir(DirEnum.DOWN);;
             }
         }
+    }
+
+    public GameFactory getGameFactory() {
+        return gameFactory;
     }
 }

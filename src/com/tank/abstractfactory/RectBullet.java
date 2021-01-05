@@ -1,58 +1,42 @@
-package com.tank.vo;
+package com.tank.abstractfactory;
 
-import com.tank.enums.DirEnum;
-import com.tank.enums.GroupEnum;
-import com.tank.main.TankFrame;
-import com.tank.util.PropertiesMgr;
-import com.tank.util.ResourceMgr;
+import com.tank.*;
 
 import java.awt.*;
-import java.io.IOException;
 
-public class Bullet {
-
+public class RectBullet extends BaseBullet{
     private static final int SPEED = PropertiesMgr.getIntVal("bulletSpeed");
     private int x;
     private int y;
     private DirEnum dir;
-    private TankFrame tk;
+    private TankFrame tf;
     public static int WEIGHT = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private boolean isLive = true;
     private GroupEnum groupEnum = GroupEnum.BAD;
     private Rectangle rect = new Rectangle();
 
-    public Bullet(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
+    public RectBullet(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.groupEnum = groupEnum;
-        this.tk = tk;
+        this.tf = tf;
 
         rect.x = this.x;
         rect.y = this.y;
         rect.width = WEIGHT;
         rect.height = HEIGHT;
     }
-
+    @Override
     public void paint(Graphics g){
         if(!isLive){
-            tk.bullets.remove(this);
+            tf.bullets.remove(this);
         }
-        switch (dir){
-            case LEFT:
-                g.drawImage(ResourceMgr.bulletL,x,y,null);
-                break;
-            case RIGHT:
-                g.drawImage(ResourceMgr.bulletR,x,y,null);
-                break;
-            case UP:
-                g.drawImage(ResourceMgr.bulletU,x,y,null);
-                break;
-            case DOWN:
-                g.drawImage(ResourceMgr.bulletD,x,y,null);
-                break;
-        }
+        Color c = g.getColor();
+        g.setColor(Color.YELLOW);
+        g.fillRect(x,y,20,20);
+        g.setColor(c);
         moving();
     }
     private void moving(){
@@ -72,7 +56,7 @@ public class Bullet {
         }
         rect.x = this.x;
         rect.y = this.y;
-        if(x < 0 || y < 0 || x > tk.GAME_WIDTH || y > tk.GAME_HEIGHT){
+        if(x < 0 || y < 0 || x > tf.GAME_WIDTH || y > tf.GAME_HEIGHT){
             isLive = false;
         }
     }
@@ -81,6 +65,7 @@ public class Bullet {
      * 销毁坦克
      * @param tank
      */
+    @Override
     public void destoryTanks(Tank tank) {
         if(this.groupEnum == tank.getGroup()){
             return;
@@ -90,11 +75,7 @@ public class Bullet {
         /*通过Rectangle判断碰撞*/
         if(rect.intersects(tank.getRect())){
             this.die();
-            try {
-                tank.die();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            tank.die();
         }
     }
 

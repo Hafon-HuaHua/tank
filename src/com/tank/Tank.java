@@ -1,19 +1,13 @@
-package com.tank.vo;
+package com.tank;
 
-import com.tank.enums.DirEnum;
-import com.tank.enums.GroupEnum;
-import com.tank.main.TankFrame;
-import com.tank.service.FireStrategy;
-import com.tank.service.SingleBulletFireStrategy;
-import com.tank.util.AudioUtil;
-import com.tank.util.PropertiesMgr;
-import com.tank.util.ResourceMgr;
+import com.tank.abstractfactory.BaseTank;
+import com.tank.abstractfactory.DefaultFactory;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends BaseTank {
     private int x;
     private int y;
     private DirEnum dir = DirEnum.DOWN;
@@ -26,29 +20,29 @@ public class Tank {
     private Random r = new Random();
     private GroupEnum groupEnum = GroupEnum.BAD;
     private Rectangle rect = new Rectangle();
-    private FireStrategy fs = SingleBulletFireStrategy.getInstance();
-    public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tk) {
+    private FireStrategy fs = FourFireStrategy.getInstance();
+    public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.groupEnum = groupEnum;
-        this.tf = tk;
+        this.tf = tf;
         rect.x = this.x;
         rect.y = this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
-        if(groupEnum == GroupEnum.GOOD){
-            String classPath = PropertiesMgr.getStringVal("goodFs");
-            try {
-                fs = (FireStrategy) Class.forName(classPath).newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(groupEnum == GroupEnum.GOOD){
+//            String classPath = PropertiesMgr.getStringVal("goodFs");
+//            try {
+//                fs = (FireStrategy) Class.forName(classPath).newInstance();
+//            } catch (InstantiationException e) {
+//                e.printStackTrace();
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     /**
@@ -143,11 +137,11 @@ public class Tank {
      * 坦克死亡
      * @throws IOException
      */
-    public void die() throws IOException {
+    public void die(){
         this.isLive = false;
         int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
         int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
-        tf.booms.add(new Boom(eX,eY,tf));
+        tf.booms.add(tf.getGameFactory().createBoom(eX,eY,tf));
     }
 
     private void randomDir() {

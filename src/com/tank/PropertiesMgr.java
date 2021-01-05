@@ -1,4 +1,4 @@
-package com.tank.util;
+package com.tank;
 
 import java.io.IOException;
 import java.util.Properties;

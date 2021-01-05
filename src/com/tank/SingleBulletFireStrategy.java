@@ -1,7 +1,4 @@
-package com.tank.service;
-
-import com.tank.vo.Bullet;
-import com.tank.vo.Tank;
+package com.tank;
 
 public class SingleBulletFireStrategy implements FireStrategy{
     private static class SingleBulletFireInner{

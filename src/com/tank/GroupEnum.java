@@ -1,4 +1,4 @@
-package com.tank.enums;
+package com.tank;
 
 /**
  * 坦克好不分组

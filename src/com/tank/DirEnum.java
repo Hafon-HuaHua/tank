@@ -1,4 +1,4 @@
-package com.tank.enums;
+package com.tank;
 
 /**
  * 方向
