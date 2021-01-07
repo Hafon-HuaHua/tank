@@ -2,6 +2,7 @@ package com.tank;
 
 import com.tank.abstractfactory.BaseTank;
 import com.tank.abstractfactory.DefaultFactory;
+import com.tank.facecade.GameModel;
 
 import java.awt.*;
 import java.io.IOException;
@@ -16,17 +17,17 @@ public class Tank extends BaseTank {
     private boolean moving = true;
     public static int WIDTH = ResourceMgr.badTankD.getWidth();
     public static int HEIGHT = ResourceMgr.badTankD.getHeight();
-    private TankFrame tf;
+    private GameModel gm;
     private Random r = new Random();
     private GroupEnum groupEnum = GroupEnum.BAD;
     private Rectangle rect = new Rectangle();
     private FireStrategy fs = FourFireStrategy.getInstance();
-    public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tf) {
+    public Tank(int x, int y, DirEnum dir, GroupEnum groupEnum, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.groupEnum = groupEnum;
-        this.tf = tf;
+        this.gm = gm;
         rect.x = this.x;
         rect.y = this.y;
         rect.width = WIDTH;
@@ -51,7 +52,7 @@ public class Tank extends BaseTank {
      */
     public void paint(Graphics g){
         if(!isLive){
-            tf.enemyTanks.remove(this);
+            gm.getEnemyTanks().remove(this);
         }
         switch (dir){
             case LEFT:
@@ -141,7 +142,7 @@ public class Tank extends BaseTank {
         this.isLive = false;
         int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
         int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
-        tf.booms.add(tf.getGameFactory().createBoom(eX,eY,tf));
+        gm.getBooms().add(gm.getGameFactory().createBoom(eX,eY,gm));
     }
 
     private void randomDir() {
@@ -150,10 +151,6 @@ public class Tank extends BaseTank {
 
     public GroupEnum getGroup() {
         return groupEnum;
-    }
-
-    public void setGroup(GroupEnum groupEnum) {
-        this.groupEnum = groupEnum;
     }
 
     public int getX() {
@@ -176,23 +173,15 @@ public class Tank extends BaseTank {
         return rect;
     }
 
-    public TankFrame getTf() {
-        return tf;
-    }
-
-    public void setTf(TankFrame tf) {
-        this.tf = tf;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public DirEnum getDir() {
         return dir;
+    }
+
+    public GameModel getGm() {
+        return gm;
+    }
+
+    public void setGm(GameModel gm) {
+        this.gm = gm;
     }
 }

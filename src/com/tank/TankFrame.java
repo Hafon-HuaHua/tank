@@ -1,29 +1,19 @@
 package com.tank;
 
-import com.tank.abstractfactory.*;
+import com.tank.facecade.GameModel;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TankFrame extends Frame {
 
-    /*主战坦克*/
-    public Tank tank = new Tank(200,400, DirEnum.UP, GroupEnum.GOOD,this);
-    /*敌方坦克*/
-    public List<Tank> enemyTanks = new ArrayList<>();
-    /*子弹*/
-    public List<BaseBullet> bullets = new ArrayList<>();
-    /*爆炸*/
-    public List<BaseBoom> booms = new ArrayList<>();
     /*窗口宽和高*/
     public static final int GAME_WIDTH = PropertiesMgr.getIntVal("gameWidth"),GAME_HEIGHT = PropertiesMgr.getIntVal("gameHeight");
 
-    private GameFactory gameFactory = DefaultFactory.getInstance();
+    private GameModel gm = new GameModel();
 
     public TankFrame(){
         /*初始窗口属性*/
@@ -33,8 +23,7 @@ public class TankFrame extends Frame {
         setVisible(true);
         setBackground(Color.BLACK);
         setLocation(400,200);
-        /*初始化敌方坦克*/
-        initEnemyTanks();
+
         /*添加键盘按键监听*/
         this.addKeyListener(new MyKeyListener());
         /*添加窗口监听，点击窗口X时结束游戏进程，防止内存泄漏*/
@@ -44,19 +33,9 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
-
     }
 
-    /**
-     * 初始化敌方坦克
-     */
-    private void initEnemyTanks(){
-        int enemyTankCount = PropertiesMgr.getIntVal("initBadTankCount");
-        for(int i = 0; i < enemyTankCount; i++){
-            Tank tank = new Tank(180 + i * 10,200,DirEnum.DOWN, GroupEnum.BAD,this);
-            enemyTanks.add(tank);
-        }
-    }
+
     /**
      * 双缓冲消除画面闪烁
      */
@@ -78,40 +57,13 @@ public class TankFrame extends Frame {
      */
     @Override
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("子弹的数量：" + bullets.size(),10,40);
-        g.drawString("敌方坦克的数量：" + enemyTanks.size(),10,80);
-        g.drawString("爆炸数量：" + booms.size(),10,120);
-        g.setColor(c);
-        /*画主战坦克*/
-        tank.paint(g);
-        /*画故方坦克*/
-        for(int i = 0; i<enemyTanks.size();i++){
-            enemyTanks.get(i).paint(g);
-        }
-        /*画子弹*/
-        for(int i = 0; i<bullets.size();i++){
-            bullets.get(i).paint(g);
-        }
-        /*画爆炸效果*/
-        for(int i = 0; i<booms.size();i++){
-            booms.get(i).paint(g);
-        }
-        /*逐一判断子弹与坦克是否相撞，如果相撞就双双销毁*/
-        for(int i = 0;i < bullets.size();i++){
-            for(int j = 0; j < enemyTanks.size();j++){
-                bullets.get(i).destoryTanks(enemyTanks.get(j));
-            }
-        }
-
+        gm.paint(g);
     }
-
     /**
      * 内部类
      * 键盘按键按下和松开监听
      */
-    class MyKeyListener extends KeyAdapter{
+    class MyKeyListener extends KeyAdapter {
         boolean vl = false;
         boolean vr = false;
         boolean vu = false;
@@ -155,13 +107,14 @@ public class TankFrame extends Frame {
                     vd = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    tank.fire();
+                    gm.getTank().fire();
                     break;
             }
             setMarkDir();
         }
 
         private void setMarkDir(){
+            Tank tank = gm.getTank();
             if(!vl && !vr && !vu && !vd){
                 tank.setMoving(false);
             }else{
@@ -177,9 +130,5 @@ public class TankFrame extends Frame {
                 tank.setDir(DirEnum.DOWN);;
             }
         }
-    }
-
-    public GameFactory getGameFactory() {
-        return gameFactory;
     }
 }

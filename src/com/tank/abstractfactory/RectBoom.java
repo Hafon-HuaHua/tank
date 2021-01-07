@@ -2,21 +2,21 @@ package com.tank.abstractfactory;
 
 import com.tank.AudioUtil;
 import com.tank.ResourceMgr;
-import com.tank.TankFrame;
+import com.tank.facecade.GameModel;
 
 import java.awt.*;
 
 public class RectBoom extends BaseBoom {
     private int x;
     private int y;
-    private TankFrame tf;
+    private GameModel gm;
     /*爆炸*/
     private int step = 0;
 
-    public RectBoom(int x, int y, TankFrame tf){
+    public RectBoom(int x, int y, GameModel gm){
         this.x = x;
         this.y = y;
-        this.tf = tf;
+        this.gm = gm;
         new Thread(() -> new AudioUtil("audio/explode.wav").play()).start();
     }
 
@@ -32,7 +32,7 @@ public class RectBoom extends BaseBoom {
         step++;
         g.setColor(c);
         if(step >= ResourceMgr.boomImages.length){
-            tf.booms.remove(this);
+            gm.getBooms().remove(this);
         }
     }
 }

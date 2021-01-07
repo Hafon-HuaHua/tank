@@ -1,9 +1,9 @@
 package com.tank;
 
 import com.tank.abstractfactory.BaseBoom;
+import com.tank.facecade.GameModel;
 
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * 爆炸类
@@ -13,14 +13,14 @@ public class Boom extends BaseBoom {
     public static final int HEIGHT = ResourceMgr.boomImages[0].getHeight();
     private int x;
     private int y;
-    private TankFrame tf;
+    private GameModel gm;
     /*爆炸*/
     private int step = 0;
 
-    public Boom(int x, int y, TankFrame tf){
+    public Boom(int x, int y, GameModel gm){
         this.x = x;
         this.y = y;
-        this.tf = tf;
+        this.gm = gm;
         new Thread(() -> new AudioUtil("audio/explode.wav").play()).start();
     }
 
@@ -32,7 +32,7 @@ public class Boom extends BaseBoom {
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.boomImages[step++],this.x,this.y,null);
         if(step >= ResourceMgr.boomImages.length){
-            tf.booms.remove(this);
+            gm.getBooms().remove(this);
         }
     }
 }

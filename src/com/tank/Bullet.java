@@ -1,6 +1,7 @@
 package com.tank;
 
 import com.tank.abstractfactory.BaseBullet;
+import com.tank.facecade.GameModel;
 
 import java.awt.*;
 import java.io.IOException;
@@ -11,19 +12,19 @@ public class Bullet extends BaseBullet {
     private int x;
     private int y;
     private DirEnum dir;
-    private TankFrame tf;
+    private GameModel gm;
     public static int WEIGHT = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private boolean isLive = true;
     private GroupEnum groupEnum = GroupEnum.BAD;
     private Rectangle rect = new Rectangle();
 
-    public Bullet(int x, int y, DirEnum dir, GroupEnum groupEnum, TankFrame tf) {
+    public Bullet(int x, int y, DirEnum dir, GroupEnum groupEnum, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.groupEnum = groupEnum;
-        this.tf = tf;
+        this.gm = gm;
 
         rect.x = this.x;
         rect.y = this.y;
@@ -33,7 +34,7 @@ public class Bullet extends BaseBullet {
 
     public void paint(Graphics g){
         if(!isLive){
-            tf.bullets.remove(this);
+            gm.getBullets().remove(this);
         }
         switch (dir){
             case LEFT:
@@ -68,7 +69,7 @@ public class Bullet extends BaseBullet {
         }
         rect.x = this.x;
         rect.y = this.y;
-        if(x < 0 || y < 0 || x > tf.GAME_WIDTH || y > tf.GAME_HEIGHT){
+        if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT){
             isLive = false;
         }
     }

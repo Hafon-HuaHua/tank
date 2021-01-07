@@ -13,7 +13,7 @@ public class FourFireStrategy implements FireStrategy{
         int bX = tk.getX() + Tank.WIDTH/2 - Bullet.WEIGHT/2;
         int bY = tk.getY() + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
         for(DirEnum dir : DirEnum.values()){
-            tk.getTf().bullets.add(tk.getTf().getGameFactory().createBullet(bX,bY,dir,tk.getGroup(),tk.getTf()));
+            tk.getGm().getBullets().add(tk.getGm().getGameFactory().createBullet(bX,bY,dir,tk.getGroup(),tk.getGm()));
         }
     }
 }
