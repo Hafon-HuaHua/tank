@@ -1,18 +1,16 @@
 package com.tank;
 
-import com.tank.abstractfactory.BaseBoom;
 import com.tank.facecade.GameModel;
+import com.tank.facecade.GameObject;
 
 import java.awt.*;
 
 /**
  * 爆炸类
  */
-public class Boom extends BaseBoom {
+public class Boom extends GameObject {
     public static final int WIDTH = ResourceMgr.boomImages[0].getWidth();
     public static final int HEIGHT = ResourceMgr.boomImages[0].getHeight();
-    private int x;
-    private int y;
     private GameModel gm;
     /*爆炸*/
     private int step = 0;
@@ -32,7 +30,7 @@ public class Boom extends BaseBoom {
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.boomImages[step++],this.x,this.y,null);
         if(step >= ResourceMgr.boomImages.length){
-            gm.getBooms().remove(this);
+            gm.getGameObjects().remove(this);
         }
     }
 }

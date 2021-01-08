@@ -3,10 +3,11 @@ package com.tank.abstractfactory;
 import com.tank.AudioUtil;
 import com.tank.ResourceMgr;
 import com.tank.facecade.GameModel;
+import com.tank.facecade.GameObject;
 
 import java.awt.*;
 
-public class RectBoom extends BaseBoom {
+public class RectBoom extends GameObject {
     private int x;
     private int y;
     private GameModel gm;
@@ -32,7 +33,7 @@ public class RectBoom extends BaseBoom {
         step++;
         g.setColor(c);
         if(step >= ResourceMgr.boomImages.length){
-            gm.getBooms().remove(this);
+            gm.getGameObjects().remove(this);
         }
     }
 }

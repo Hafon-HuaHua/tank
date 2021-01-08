@@ -2,10 +2,11 @@ package com.tank.abstractfactory;
 
 import com.tank.*;
 import com.tank.facecade.GameModel;
+import com.tank.facecade.GameObject;
 
 import java.awt.*;
 
-public class RectBullet extends BaseBullet{
+public class RectBullet extends GameObject {
     private static final int SPEED = PropertiesMgr.getIntVal("bulletSpeed");
     private int x;
     private int y;
@@ -32,7 +33,7 @@ public class RectBullet extends BaseBullet{
     @Override
     public void paint(Graphics g){
         if(!isLive){
-            gm.getBullets().remove(this);
+            gm.getGameObjects().remove(this);
         }
         Color c = g.getColor();
         g.setColor(Color.YELLOW);
@@ -66,7 +67,7 @@ public class RectBullet extends BaseBullet{
      * 销毁坦克
      * @param tank
      */
-    @Override
+//    @Override
     public void destoryTanks(Tank tank) {
         if(this.groupEnum == tank.getGroup()){
             return;

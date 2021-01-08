@@ -1,16 +1,13 @@
 package com.tank;
 
-import com.tank.abstractfactory.BaseBullet;
 import com.tank.facecade.GameModel;
+import com.tank.facecade.GameObject;
 
 import java.awt.*;
-import java.io.IOException;
 
-public class Bullet extends BaseBullet {
+public class Bullet extends GameObject {
 
     private static final int SPEED = PropertiesMgr.getIntVal("bulletSpeed");
-    private int x;
-    private int y;
     private DirEnum dir;
     private GameModel gm;
     public static int WEIGHT = ResourceMgr.bulletD.getWidth();
@@ -31,10 +28,10 @@ public class Bullet extends BaseBullet {
         rect.width = WEIGHT;
         rect.height = HEIGHT;
     }
-
+    @Override
     public void paint(Graphics g){
         if(!isLive){
-            gm.getBullets().remove(this);
+            gm.getGameObjects().remove(this);
         }
         switch (dir){
             case LEFT:

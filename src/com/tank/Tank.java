@@ -1,16 +1,15 @@
 package com.tank;
 
-import com.tank.abstractfactory.BaseTank;
-import com.tank.abstractfactory.DefaultFactory;
 import com.tank.facecade.GameModel;
+import com.tank.facecade.GameObject;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
 
-public class Tank extends BaseTank {
-    private int x;
-    private int y;
+public class Tank extends GameObject {
+    private int oldX;
+    private int oldY;
     private DirEnum dir = DirEnum.DOWN;
     private static final int SPEED = PropertiesMgr.getIntVal("tankSpeed");
     private boolean isLive = true;
@@ -50,9 +49,10 @@ public class Tank extends BaseTank {
      * 画坦克
      * @param g
      */
+    @Override
     public void paint(Graphics g){
         if(!isLive){
-            gm.getEnemyTanks().remove(this);
+            gm.getGameObjects().remove(this);
         }
         switch (dir){
             case LEFT:
@@ -75,6 +75,8 @@ public class Tank extends BaseTank {
      * 坦克移动
      */
     private void moving(){
+        oldX = x;
+        oldY = y;
         if(!moving){
             return;
         }
@@ -142,23 +144,17 @@ public class Tank extends BaseTank {
         this.isLive = false;
         int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
         int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
-        gm.getBooms().add(gm.getGameFactory().createBoom(eX,eY,gm));
+        gm.getGameObjects().add(gm.getGameFactory().createBoom(eX,eY,gm));
     }
-
+    public void stop(){
+        moving = false;
+    }
     private void randomDir() {
         this.dir = DirEnum.values()[r.nextInt(4)];
     }
 
     public GroupEnum getGroup() {
         return groupEnum;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public void setDir(DirEnum dir) {
@@ -183,5 +179,21 @@ public class Tank extends BaseTank {
 
     public void setGm(GameModel gm) {
         this.gm = gm;
+    }
+
+    public int getOldX() {
+        return oldX;
+    }
+
+    public void setOldX(int oldX) {
+        this.oldX = oldX;
+    }
+
+    public int getOldY() {
+        return oldY;
+    }
+
+    public void setOldY(int oldY) {
+        this.oldY = oldY;
     }
 }
