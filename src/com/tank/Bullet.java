@@ -91,7 +91,15 @@ public class Bullet extends GameObject {
     /**
      * 子弹消失
      */
-    private void die() {
+    public void die() {
         this.isLive = false;
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
     }
 }

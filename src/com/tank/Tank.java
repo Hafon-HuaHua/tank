@@ -2,9 +2,16 @@ package com.tank;
 
 import com.tank.facecade.GameModel;
 import com.tank.facecade.GameObject;
+import com.tank.observer.TankFireEvent;
+import com.tank.observer.TankFireHandler;
+import com.tank.observer.TankFireObserver;
+import com.tank.strategy.FireStrategy;
+import com.tank.strategy.FourFireStrategy;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Tank extends GameObject {
@@ -145,6 +152,14 @@ public class Tank extends GameObject {
         int eX = this.getX() + Tank.WIDTH/2 - Boom.WIDTH/2;
         int eY = this.getY() + Tank.HEIGHT/2 - Boom.HEIGHT/2;
         gm.getGameObjects().add(gm.getGameFactory().createBoom(eX,eY,gm));
+    }
+
+    private List<TankFireHandler> observerList = Arrays.asList(new TankFireHandler());
+    public void tankFireEvent(){
+        TankFireEvent tankFireEvent = new TankFireEvent(this);
+        for(TankFireObserver ob : observerList){
+            ob.actionEvent(tankFireEvent);
+        }
     }
     public void stop(){
         moving = false;

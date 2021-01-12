@@ -30,10 +30,19 @@ public class Wall extends GameObject {
         this.h = h;
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
+
     @Override
     public void paint(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.GRAY);
         g.fillRect(x,y,w,h);
+        g.setColor(c);
     }
 }

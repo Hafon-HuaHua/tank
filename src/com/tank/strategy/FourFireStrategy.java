@@ -1,4 +1,8 @@
-package com.tank;
+package com.tank.strategy;
+
+import com.tank.Bullet;
+import com.tank.DirEnum;
+import com.tank.Tank;
 
 public class FourFireStrategy implements FireStrategy{
     private FourFireStrategy(){}

@@ -107,7 +107,7 @@ public class TankFrame extends Frame {
                     vd = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    gm.getTank().fire();
+                    gm.getTank().tankFireEvent();
                     break;
             }
             setMarkDir();

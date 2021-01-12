@@ -1,9 +1,6 @@
 package com.tank.facecade;
 
-import com.tank.DirEnum;
-import com.tank.GroupEnum;
-import com.tank.PropertiesMgr;
-import com.tank.Tank;
+import com.tank.*;
 import com.tank.abstractfactory.DefaultFactory;
 import com.tank.abstractfactory.GameFactory;
 import com.tank.chain.Collider;
@@ -21,14 +18,22 @@ public class GameModel {
     private List<GameObject> gameObjects = new ArrayList<>();
     /*碰撞接口*/
     //private Collider collider = new TankTankCollider();
-    private ColliderChain chain = new ColliderChain();
+    private Collider chain = new ColliderChain();
 
     private GameFactory gameFactory = DefaultFactory.getInstance();
 
     public GameModel(){
         /*初始化敌方坦克*/
         initEnemyTanks();
+        /*初始化墙*/
+        //initWalls();
     }
+
+    private void initWalls() {
+        add(new Wall(200,200,120,100));
+        add(new Wall(400,300,220,130));
+    }
+
     public void add(GameObject gm){
         gameObjects.add(gm);
     }
