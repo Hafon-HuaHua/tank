@@ -38,7 +38,7 @@ public class TankFrame extends Frame {
         setBackground(Color.BLACK);
         setLocation(400,200);
         /*初始化敌方坦克*/
-        initEnemyTanks();
+        //initEnemyTanks();
         /*添加键盘按键监听*/
         this.addKeyListener(new MyKeyListener());
         /*添加窗口监听，点击窗口X时结束游戏进程，防止内存泄漏*/
